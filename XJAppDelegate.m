@@ -33,6 +33,7 @@
     
     [self.window makeKeyAndVisible];
     NSLog(@"%@",NSHomeDirectory());
+    NSLog(@"commit");
     return YES;
 }
 
