@@ -13,7 +13,7 @@
 #import "XJOAuthViewController.h"
 #import "XJOAuthTool.h"
 #import "UIWindow+Extension.h"
-
+#import "SDWebImageManager.h"
 @interface XJAppDelegate ()
 
 @end
@@ -33,7 +33,6 @@
     
     [self.window makeKeyAndVisible];
     NSLog(@"%@",NSHomeDirectory());
-    NSLog(@"commit");
     return YES;
 }
 
@@ -43,8 +42,11 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    //申请后台运行beginBackgroundTaskWithExpirationHandler。
+    UIBackgroundTaskIdentifier task = [application beginBackgroundTaskWithExpirationHandler:^{
+        [application endBackgroundTask:task];
+    }];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -57,6 +59,15 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
+{
+    //1.取消下载
+    SDWebImageManager *mgr = [SDWebImageManager sharedManager];
+    [mgr cancelAll];
+    //2.清除内存中的所有图片
+    [mgr.imageCache clearMemory];
 }
 
 @end

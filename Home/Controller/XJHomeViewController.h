@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XJHomeViewController : UIViewController
+@interface XJHomeViewController : UITableViewController
 
 @end
