@@ -17,6 +17,18 @@
 
 @implementation XJStatusPhotosView
 
++ (CGSize)sizeWithCount:(int)count
+{
+    NSInteger maxCols = XJStatusPhotoMaxCol(count);
+    NSInteger cols = (count >= maxCols)?maxCols : count;
+    CGFloat photosW = cols * XJStatusPhotoWH + (cols - 1) * XJStatusPhotoMargin;
+    
+    NSInteger rows = (count + maxCols - 1)/maxCols;
+    CGFloat photosH = rows * XJStatusPhotoWH + (rows - 1) * XJStatusPhotoMargin;
+    
+    return CGSizeMake(photosW, photosH);
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -29,7 +41,7 @@
 - (void)setPhotos:(NSArray *)photos
 {
     _photos = photos;
-    int photosCount = photos.count;
+    NSInteger photosCount = photos.count;
     
     while (self.subviews.count < photosCount) {
         XJStatusPhotoView *photoview = [[XJStatusPhotoView alloc]init];
@@ -51,7 +63,7 @@
 {
     [super layoutSubviews];
     
-    int photosCount = self.photos.count;
+    NSInteger photosCount = self.photos.count;
     int maxCol = XJStatusPhotoMaxCol(photosCount);
     for (int i=0; i<photosCount; i++) {
         XJStatusPhotoView *photoView = self.subviews[i];
@@ -60,5 +72,6 @@
         
     }
 }
+
 
 @end
