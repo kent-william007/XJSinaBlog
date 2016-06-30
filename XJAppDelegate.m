@@ -32,7 +32,7 @@
     }
     
     [self.window makeKeyAndVisible];
-    NSLog(@"%@",NSHomeDirectory());
+    //NSLog(@"%@",NSHomeDirectory());
     return YES;
 }
 
