@@ -55,6 +55,12 @@
     
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:60 target:self selector:@selector(setupUnreadCount) userInfo:nil repeats:YES];
     [[NSRunLoop mainRunLoop]addTimer:timer forMode:NSRunLoopCommonModes];
+    
+    
+    UIView *view =[[UIView alloc]init];
+    view.frame = CGRectMake(400, 0, 320, 480);
+    view.backgroundColor = [UIColor orangeColor];
+    [self.view addSubview:view];
 }
 - (void)setupUnreadCount
 {
