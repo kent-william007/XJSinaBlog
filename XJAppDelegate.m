@@ -34,6 +34,8 @@
     [self.window makeKeyAndVisible];
     //NSLog(@"%@",NSHomeDirectory());
     return YES;
+    
+    NSLog(@"testDve2");
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
