@@ -22,6 +22,8 @@
 #import "XJStatusCell.h"
 #import "XJStatusFrame.h"
 
+#import "XJNetWorking.h"
+
 #define Data_Path [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"data.plist"]
 
 
@@ -144,31 +146,39 @@
     if (firstStatusFrame) {
         params[@"since_id"] = firstStatusFrame.status.idstr;
     }
-    [mgr GET:@"https://api.weibo.com/2/statuses/friends_timeline.json" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-        NSLog(@"最新数据：%@",responseObject);
-//        self.statuses = responseObject[@"statuses"];
-        NSArray *newStatuses = [XJStatus objectArrayWithKeyValuesArray:responseObject[@"statuses"]];
-        NSArray *newStatusesFrame = [self statusFramesWithStatus:newStatuses];
-
-//        self.statuses = [XJStatus objectArrayWithKeyValuesArray:responseObject[@"statuses"]];
-        NSRange range = NSMakeRange(0, newStatuses.count);
-        NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];
-        [self.statusFrames insertObjects:newStatusesFrame atIndexes:set];
-        [responseObject writeToFile:Data_Path atomically:YES];
-        
-        if ([responseObject writeToFile:Data_Path atomically:YES]) {
-            NSLog(@"成功写入");
-        }else{
-            NSLog(@"失败写入");
-        }
-        // 刷新表格
-        [self.tableView reloadData];
+//    [mgr GET:@"https://api.weibo.com/2/statuses/friends_timeline.json" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+//        NSLog(@"最新数据：%@",responseObject);
+////        self.statuses = responseObject[@"statuses"];
+//        NSArray *newStatuses = [XJStatus objectArrayWithKeyValuesArray:responseObject[@"statuses"]];
+//        NSArray *newStatusesFrame = [self statusFramesWithStatus:newStatuses];
+//
+////        self.statuses = [XJStatus objectArrayWithKeyValuesArray:responseObject[@"statuses"]];
+//        NSRange range = NSMakeRange(0, newStatuses.count);
+//        NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];
+//        [self.statusFrames insertObjects:newStatusesFrame atIndexes:set];
+//        [responseObject writeToFile:Data_Path atomically:YES];
+//        
+//        if ([responseObject writeToFile:Data_Path atomically:YES]) {
+//            NSLog(@"成功写入");
+//        }else{
+//            NSLog(@"失败写入");
+//        }
+//        // 刷新表格
+//        [self.tableView reloadData];
+//        [control endRefreshing];
+//        
+//        [self showNewsStatusCount:newStatusesFrame.count];
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        NSLog(@"error:%@",error);
+//        [control endRefreshing];
+//    }];
+    
+    
+    [[XJNetWorking sharedInstance]getUrl:@"https://api.weibo.com/2/statuses/friends_timeline.json" actionParams:params method:@"POst" success:^(id responseObj) {
+        NSLog(@"%@",responseObj);
         [control endRefreshing];
-        
-        [self showNewsStatusCount:newStatusesFrame.count];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"error:%@",error);
-        [control endRefreshing];
+    } failur:^(NSError *error) {
+        NSLog(@"%@",error);
     }];
 
 }
