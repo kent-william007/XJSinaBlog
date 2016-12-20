@@ -33,9 +33,8 @@
  */
 - (void)plusClick
 {
-    // 通知代理
-    if ([self.tabBardelegate respondsToSelector:@selector(clickPlusButton:)]) {
-        [self.tabBardelegate clickPlusButton:self];
+    if ([self.tabBardelegate respondsToSelector:@selector(clickPlusButtonDelegate:)]) {
+        [self.tabBardelegate clickPlusButtonDelegate:self];
     }
 }
 -(void)layoutSubviews

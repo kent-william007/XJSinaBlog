@@ -14,6 +14,7 @@
 #import "XJTabBarViewController.h"
 #import "XJNavigationViewController.h"
 #import "XJTabBar.h"
+#import "XJComposeViewController.h"
 @interface XJTabBarViewController ()<XJTabBarDelegate>
 
 @end
@@ -65,9 +66,15 @@
     XJNavigationViewController *nav = [[XJNavigationViewController alloc]initWithRootViewController:childVC];
     [self addChildViewController:nav];
 }
--(void)clickPlustButton:(XJTabBar *)tabBar
+- (void)clickPlusButtonDelegate:(XJTabBar *)tabar
 {
-    NSLog(@"clickPlustBUtton %@",tabBar);
+     NSLog(@"clickPlustBUtton %@",tabar);
+    XJComposeViewController *compressVC = [[XJComposeViewController alloc]init];
+    XJNavigationViewController *nav = [[XJNavigationViewController alloc]initWithRootViewController:compressVC];
+    [self presentViewController:nav animated:YES completion:^{
+        
+    }];
+//    [self.navigationController pushViewController:compressVC animated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

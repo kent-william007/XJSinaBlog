@@ -10,7 +10,7 @@
 @class XJTabBar;
 @protocol XJTabBarDelegate <UITabBarDelegate>
 @optional
-- (void)clickPlusButton:(XJTabBar *)xjTabBar;
+- (void)clickPlusButtonDelegate:(XJTabBar *)xjTabBar;
 @end
 
 @interface XJTabBar : UITabBar

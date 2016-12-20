@@ -59,10 +59,6 @@
     [[NSRunLoop mainRunLoop]addTimer:timer forMode:NSRunLoopCommonModes];
     
     
-    UIView *view =[[UIView alloc]init];
-    view.frame = CGRectMake(400, 0, 320, 480);
-    view.backgroundColor = [UIColor orangeColor];
-    [self.view addSubview:view];
 }
 - (void)setupUnreadCount
 {
@@ -141,45 +137,45 @@
     XJOAuthModel *account = [XJOAuthTool account];
     NSMutableDictionary *params  = [NSMutableDictionary dictionary];
     params[@"access_token"] = account.access_token;
-//    params[@"count"] = @15;
+    params[@"count"] = @10;
     XJStatusFrame *firstStatusFrame = [self.statusFrames firstObject];
     if (firstStatusFrame) {
         params[@"since_id"] = firstStatusFrame.status.idstr;
     }
-//    [mgr GET:@"https://api.weibo.com/2/statuses/friends_timeline.json" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
-//        NSLog(@"最新数据：%@",responseObject);
-////        self.statuses = responseObject[@"statuses"];
-//        NSArray *newStatuses = [XJStatus objectArrayWithKeyValuesArray:responseObject[@"statuses"]];
-//        NSArray *newStatusesFrame = [self statusFramesWithStatus:newStatuses];
-//
-////        self.statuses = [XJStatus objectArrayWithKeyValuesArray:responseObject[@"statuses"]];
-//        NSRange range = NSMakeRange(0, newStatuses.count);
-//        NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];
-//        [self.statusFrames insertObjects:newStatusesFrame atIndexes:set];
-//        [responseObject writeToFile:Data_Path atomically:YES];
-//        
-//        if ([responseObject writeToFile:Data_Path atomically:YES]) {
-//            NSLog(@"成功写入");
-//        }else{
-//            NSLog(@"失败写入");
-//        }
-//        // 刷新表格
-//        [self.tableView reloadData];
-//        [control endRefreshing];
-//        
-//        [self showNewsStatusCount:newStatusesFrame.count];
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"error:%@",error);
-//        [control endRefreshing];
-//    }];
-    
-    
-    [[XJNetWorking sharedInstance]getUrl:@"https://api.weibo.com/2/statuses/friends_timeline.json" actionParams:params method:@"POst" success:^(id responseObj) {
-        NSLog(@"%@",responseObj);
+    [mgr GET:@"https://api.weibo.com/2/statuses/friends_timeline.json" parameters:params success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+        NSLog(@"最新数据：%@",responseObject);
+//        self.statuses = responseObject[@"statuses"];
+        NSArray *newStatuses = [XJStatus objectArrayWithKeyValuesArray:responseObject[@"statuses"]];
+        NSArray *newStatusesFrame = [self statusFramesWithStatus:newStatuses];
+
+//        self.statuses = [XJStatus objectArrayWithKeyValuesArray:responseObject[@"statuses"]];
+        NSRange range = NSMakeRange(0, newStatuses.count);
+        NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:range];
+        [self.statusFrames insertObjects:newStatusesFrame atIndexes:set];
+        [responseObject writeToFile:Data_Path atomically:YES];
+        
+        if ([responseObject writeToFile:Data_Path atomically:YES]) {
+            NSLog(@"成功写入");
+        }else{
+            NSLog(@"失败写入");
+        }
+        // 刷新表格
+        [self.tableView reloadData];
         [control endRefreshing];
-    } failur:^(NSError *error) {
-        NSLog(@"%@",error);
+        
+        [self showNewsStatusCount:newStatusesFrame.count];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"error:%@",error);
+        [control endRefreshing];
     }];
+    
+    
+//    [[XJNetWorking sharedInstance]getUrl:@"https://api.weibo.com/2/statuses/friends_timeline.json" actionParams:params method:@"POst" success:^(id responseObj) {
+//        NSLog(@"%@",responseObj);
+//        [control endRefreshing];
+//    } failur:^(NSError *error) {
+//        NSLog(@"%@",error);
+//    }];
 
 }
 
@@ -204,7 +200,7 @@
         [self.tableView reloadData];
         self.tableView.tableFooterView.hidden = YES;
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        self.tableView.tableFooterView.hidden = YES;
+        //self.tableView.tableFooterView.hidden = YES;
     }];
     
 }
@@ -336,18 +332,24 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+//    CGFloat offsetY = scrollView.contentOffset.y;
+//    if (self.statusFrames.count == 0)return;
+//    CGFloat judgeOffsetY = scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.height - self.tableView.tableFooterView.height;
+//    if (offsetY >= judgeOffsetY) {
+//        self.tableView.tableFooterView.hidden = NO;
+//        [self loadMoreStatus];
+//    }
+    
+    
+    
+    if(self.statusFrames.count == 0 || self.tableView.tableFooterView.isHidden == NO)return;
     CGFloat offsetY = scrollView.contentOffset.y;
-    if (self.statusFrames.count == 0)return;
-    CGFloat judgeOffsetY = scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.height - self.tableView.tableFooterView.height;
-    if (offsetY >= judgeOffsetY) {
+    CGFloat judgeoffsetY = scrollView.contentSize.height + scrollView.contentInset.bottom - scrollView.height - self.tableView.tableFooterView.height;
+ 
+    if (offsetY >= judgeoffsetY) {
         self.tableView.tableFooterView.hidden = NO;
         [self loadMoreStatus];
     }
-    
-    
-    
-    
- 
     
     
     

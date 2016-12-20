@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class XJTabBar;
 @interface XJTabBarViewController : UITabBarController
 + (XJTabBarViewController *)shareInstance;
+-(void)clickPlustButton:(XJTabBar *)tabBar;
 @end
