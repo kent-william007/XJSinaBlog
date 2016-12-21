@@ -21,7 +21,7 @@
         [self createButton:@"compose_toolbar_picture" hightLightImage:@"compose_toolbar_picture_highlighted" composeType:composeToolbar_pictureType];
         [self createButton:@"compose_mentionbutton_background" hightLightImage:@"compose_mentionbutton_background_highlighted" composeType:composeMentionbuttonType];
         [self createButton:@"compose_trendbutton_background" hightLightImage:@"compose_trendbutton_background_highlighted" composeType:composeTrendbuttonType];
-        [self createButton:@"compose_emoticonbutton_background" hightLightImage:@"compose_emoticonbutton_background_highlighted" composeType:composeEmoticonbuttonType];
+        [self createButton:@"compose_keyboardbutton_background" hightLightImage:@"compose_keyboardbutton_background_highlighted" composeType:composeEmoticonbuttonType];
         
     }
     return self;
@@ -30,15 +30,14 @@
 {
     UIButton *emotionButton = [self viewWithTag:composeEmoticonbuttonType];
     _showKeyboardButton = showKeyboardButton;
-    UIImage *emotionSelect = [UIImage imageNamed:@"album"];
-    UIImage *emotionSelect_hight = [UIImage imageNamed:@"album"];
-    if (showKeyboardButton) {
-        emotionSelect = [UIImage imageNamed:@"album"];
-        emotionSelect_hight =[UIImage imageNamed:@"album"];
+    UIImage *emotionSelect = [UIImage imageNamed:@"compose_emoticonbutton_background"];
+    UIImage *emotionSelect_hight = [UIImage imageNamed:@"compose_emoticonbutton_background_highlighted"];
+    if (!showKeyboardButton) {
+        emotionSelect = [UIImage imageNamed:@"compose_keyboardbutton_background"];
+        emotionSelect_hight = [UIImage imageNamed:@"compose_keyboardbutton_background_highlighted"];
     }
-    [emotionButton setImage:emotionSelect forState:UIControlStateNormal];
-    
-//    [emotionButton setImage:emotionSelect_hight forState:UIControlStateHighlighted];
+    [emotionButton setImage:emotionSelect forState:UIControlStateHighlighted];
+    [emotionButton setImage:emotionSelect_hight forState:UIControlStateSelected];
 }
 
 - (void)layoutSubviews
